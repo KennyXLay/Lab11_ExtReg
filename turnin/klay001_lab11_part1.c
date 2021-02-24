@@ -48,7 +48,7 @@ void reg_tick(){
 			break;
 		case dec:
 			if(up && down){led = 0x00;}
-			else if (up){state = dec;}
+			else if (down){state = dec;}
 			else{state = wait;}
 			break;
 		case comb:
