@@ -23,32 +23,29 @@ void transmit_data(unsigned char data){
 	PORTC = 0x00;
 }
 
-enum States{init, start, wait, inc, dec, comb} state;
+enum States{init, wait, inc, dec, comb} state;
 unsigned char led = 0x00;
 void reg_tick(){
 	unsigned char up = ~PINA & 0x01;
 	unsigned char down = ~PINA & 0x02;
 	switch(state) {
-		case start:
-			state = init ;
-			break;
 		case init:
 			state = wait;
 			break;
 		case wait:
-			if(up && down){led = 0x00; state = both;}
+			if(up && down){led = 0x00; state = comb;}
 			else if(up && !down && led < 0xFF){++led; state = inc;}
 			else if(!up && down && led > 0x00){--led; state = dec;}
 			else{state = wait;}
 			break;
 		case inc:
 			if(up && down){led = 0x00;}
-			else if(up){state = inc;}
+			else if(up && led < 0xFF){state = inc;}
 			else{state = wait;}
 			break;
 		case dec:
 			if(up && down){led = 0x00;}
-			else if (up){state = dec;}
+			else if (down && led > 0x00){state = dec;}
 			else{state = wait;}
 			break;
 		case comb:

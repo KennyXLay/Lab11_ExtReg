@@ -40,12 +40,12 @@ void reg_tick(){
 			break;
 		case inc:
 			if(up && down){led = 0x00;}
-			else if(up){state = inc;}
+			else if(up && led < 0xFF){state = inc;}
 			else{state = wait;}
 			break;
 		case dec:
 			if(up && down){led = 0x00;}
-			else if (down){state = dec;}
+			else if (down && led > 0x00){state = dec;}
 			else{state = wait;}
 			break;
 		case comb:
